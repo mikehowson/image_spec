@@ -24,7 +24,7 @@ require 'image_spec/matchers'
 
 #Usage
 
-##looks_like
+###look_like
 
 Allows you to test that an image is within a 1% of the expected image e.g.
 
@@ -37,3 +37,9 @@ or
 ~~~~ { ruby }
 user.picture.path(:thumb).should look_like(fixtures('member_picture/thumb/test.png'))
 ~~~~
+
+###have_image_that_looks_like
+
+Test if a page contains an image that is like the stated image e.g.
+
+
