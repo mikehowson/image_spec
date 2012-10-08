@@ -6,7 +6,8 @@ e.g. User.image.should look_like(otherimage)
 
 # Requirements
 
-The gem has only been tested with Rails 3 and RSpec 2. 
+The gem has only been tested with Rails 3.0 & 3.1 with the asset
+pipeline and RSpec 2. 
 
 It also relies on imagemagick being installed and available from the command line as it utilisies its 'identify' command. The Gem has only been tested with Imagemagick V6.x.
 
