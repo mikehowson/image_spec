@@ -14,7 +14,7 @@ module ImageSpec
     def score
       raise "Expected image path is blank" unless @expected
       raise "Actual image path is blank" unless @actual
-      
+
       [@expected, @actual].each do |path|
         raise "No such file! (#{path})" unless File.exists?(path.to_s)
       end
@@ -81,8 +81,7 @@ RSpec::Matchers.define(:have_image_that_looks_like) do |expected_file_path|
 
   def any_images_look_similar?
     urls = page.all(:xpath, '//img/@src').map(&:text)
-    clean_urls = urls.map { |url| url.gsub(/\?\d+$/, '') }
-    actual_paths = clean_urls.map { |url| File.join(Rails.root, 'public', url) }
+    actual_paths = image_paths(urls)
 
     actual_paths.any? do |actual_path|
       looks_like?(actual_path)
@@ -97,6 +96,27 @@ RSpec::Matchers.define(:have_image_that_looks_like) do |expected_file_path|
 
   def comparison_with(other_file)
     ImageSpec::Comparison.new(@expected_file_path, other_file)
+  end
+
+  def image_paths(urls)
+    urls.map {|url| find_image_file(url) }
+  end
+
+  def find_image_file(url)
+    clean_url = url.gsub(/\?\d+$/, '')
+    if url =~ /^\/assets\//
+      path = File.join(Rails.root, clean_url.gsub(/^\/assets\//, '/app/assets/images/'))
+      return path if File.exists?(path)
+    elsif url =~ /^\/images\//
+      asset_path = File.join(Rails.root, clean_url.gsub(/^\/images\//, '/app/assets/images/'))
+      return asset_path if File.exists?(asset_path)
+    end
+    rails_path = File.join(Rails.root, File.join('public', clean_url))
+    if File.exists?(rails_path)
+      rails_path
+    else
+      url
+    end
   end
 end
 
