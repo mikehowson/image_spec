@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'image_spec'
-  s.version     = '0.0.2'
+  s.version     = '0.0.4'
   s.authors     = ["Matt Wynne, Mike Howson"]
   s.description = 'A library of Rspec matchers to allow comparison of similar images'
   s.summary     = "image_spec-#{s.version}"
