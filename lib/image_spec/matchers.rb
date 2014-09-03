@@ -1,6 +1,8 @@
 module ImageSpec
 
+  require 'tempfile'
   require 'open3'
+
   class Comparison
     def initialize(expected, actual, max_acceptable_score = 0.01)
       @expected, @actual = expected, actual
@@ -23,7 +25,10 @@ module ImageSpec
 
       raise "Files are not the same size" unless same_size?
 
-      cmd = "compare -verbose -metric mae #{@expected} #{@actual} #{Rails.root}/tmp/diff"
+      tempfile = Tempfile.new("diff")
+
+      cmd = "compare -verbose -metric mae #{@expected} #{@actual} #{tempfile.path}"
+
       Open3.popen3(cmd) do |stdin, stdout, stderr|
         output = stderr.read
         return false if output =~ /images too dissimilar/
