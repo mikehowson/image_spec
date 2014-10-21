@@ -68,7 +68,7 @@ RSpec::Matchers.define(:look_like) do |exected_file_path|
     ImageSpec::Comparison.new(@expected, @actual, max_acceptable_score)
   end
 
-  failure_message_for_should do
+  failure_message do
     "Expected #{@actual} to look like #{@expected}. Comparison score should be less than #{max_acceptable_score} but was #{@score}"
   end
 end
